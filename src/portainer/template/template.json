@@ -1,0 +1,215 @@
+{
+    "version": "2",
+    "templates": [
+      {
+        "categories": [
+          "DNS",
+          "Tools"
+        ],
+        "description": "Duck DNS is a free service which will point a DNS (sub domains of duckdns.org) to an IP of your choice. The service is completely free, and doesn't require reactivation or forum posts to maintain its existence.",
+        "env": [
+          {
+            "label": "SUBDOMAINS",
+            "name": "SUBDOMAINS",
+            "set": ""
+          },
+          {
+            "label": "TOKEN",
+            "name": "TOKEN",
+            "set": ""
+          },
+          {
+            "default": "1000",
+            "label": "PUID",
+            "name": "PUID"
+          },
+          {
+            "default": "100",
+            "label": "PGID",
+            "name": "PGID"
+          }
+        ],
+        "image": "linuxserver/duckdns:latest",
+        "logo": "https://raw.githubusercontent.com/Qballjos/portainer_templates/master/Images/duckdns.png",
+        "name": "duckdns",
+        "note": "<b>Configuration</b></br>First, go to duckdns site, register your subdomain and retrieve your token<br/>Then run the docker create command above with your subdomain(s) and token<br/>It will update your IP with the DuckDNS service every 5 minutes",
+        "platform": "linux",
+        "restart_policy": "unless-stopped",
+        "title": "Duck DNS",
+        "type": 1
+      },
+      {
+        "categories": [
+          "Web",
+          "Proxy"
+        ],
+        "description": "Nginx is a web server with a strong focus on high concurrency, performance and low memory usage. It can also act as a reverse proxy server for HTTP, HTTPS, SMTP, POP3, and IMAP protocols, as well as a load balancer and an HTTP cache.",
+        "env": [
+          {
+            "default": "1000",
+            "label": "PUID",
+            "name": "PUID"
+          },
+          {
+            "default": "100",
+            "label": "PGID",
+            "name": "PGID"
+          }
+        ],
+        "image": "linuxserver/nginx:latest",
+        "logo": "https://raw.githubusercontent.com/Qballjos/portainer_templates/master/Images/nginx-icon.png",
+        "name": "nginx",
+        "platform": "linux",
+        "ports": [
+          "80/tcp",
+          "443/tcp"
+        ],
+        "restart_policy": "unless-stopped",
+        "title": "Nginx",
+        "type": 1,
+        "volumes": [
+          {
+            "bind": "/portainer/Files/AppData/Config/Nginx",
+            "container": "/config"
+          }
+        ]
+      },
+      {
+        "categories": [
+          "Proxy",
+          "Tools"
+        ],
+        "description": "Nginx Proxy Manager enables you to easily forward to your websites running at home or otherwise, including free SSL, without having to know too much about Nginx or Letsencrypt.",
+        "image": "jc21/nginx-proxy-manager",
+        "logo": "https://raw.githubusercontent.com/Qballjos/portainer_templates/master/Images/proxy_mgr.png",
+        "name": "nginx-proxy-manager",
+        "platform": "linux",
+        "env": [
+          {
+            "label": "DB_SQLITE_FILE",
+            "name": "DB_SQLITE_FILE",
+            "default": "/data/database.sqlite"
+          }
+        ],
+        "ports": [
+          "80:80/tcp",
+          "81:81/tcp",
+          "443:443/tcp"
+        ],
+        "restart_policy": "unless-stopped",
+        "title": "Nginx Proxy Manager",
+        "type": 1,
+        "volumes": [
+          {
+            "bind": "/portainer/Files/AppData/Config/Nginx-Proxy/data",
+            "container": "/data"
+          },
+          {
+            "bind": "/portainer/Files/AppData/Config/Nginx-Proxy/letsencrypt",
+            "container": "/etc/letsencrypt"
+          }
+        ]
+      },
+      {
+        "categories": [
+          "Security",
+          "Updates",
+          "Cron",
+          "Tools"
+        ],
+        "description": "A container-based solution for automating Docker container base image updates.",
+        "image": "containrrr/watchtower",
+        "logo": "https://raw.githubusercontent.com/containrrr/watchtower/main/logo.png",
+        "name": "watchtower",
+        "platform": "linux",
+        "env": [
+          {
+            "label": "WATCHTOWER_DEBUG",
+            "name": "WATCHTOWER_DEBUG",
+            "default": false
+          },
+          {
+            "label": "WATCHTOWER_LOG_LEVEL",
+            "name": "WATCHTOWER_LOG_LEVEL",
+            "default": "info"
+          },
+          {
+            "label": "TZ",
+            "name": "TZ",
+            "default": "UTC"
+          },
+          {
+            "label": "WATCHTOWER_CLEANUP",
+            "name": "WATCHTOWER_CLEANUP",
+            "default": false
+          },
+          {
+            "label": "WATCHTOWER_REMOVE_VOLUMES",
+            "name": "WATCHTOWER_REMOVE_VOLUMES",
+            "default": false
+          },
+          {
+            "label": "WATCHTOWER_MONITOR_ONLY",
+            "name": "WATCHTOWER_MONITOR_ONLY",
+            "default": false
+          },
+          {
+            "label": "WATCHTOWER_SCHEDULE",
+            "name": "WATCHTOWER_SCHEDULE"
+          },
+          {
+            "label": "WATCHTOWER_POLL_INTERVAL",
+            "name": "WATCHTOWER_POLL_INTERVAL",
+            "default": 86400
+          }
+        ],
+        "restart_policy": "unless-stopped",
+        "title": "Watchtower",
+        "type": 1,
+        "volumes": [
+          {
+            "bind": "/var/run/docker.sock",
+            "container": "/var/run/docker.sock"
+          }
+        ]
+      },
+      {
+        "categories": [
+          "Speedtest",
+          "Updates",
+          "Cron",
+          "Tools"
+        ],
+        "description": "Speedtest Tracker is a self-hosted internet performance tracking application that runs speedtest checks against Ookla's Speedtest service.",
+        "image": "ghcr.io/alexjustesen/speedtest-tracker:latest",
+        "logo": "https://raw.githubusercontent.com/alexjustesen/speedtest-tracker/main/public/img/speedtest-tracker-icon.png",
+        "name": "speedtest-tracker",
+        "platform": "linux",
+        "env": [
+          {
+            "label": "PUID",
+            "name": "PUID",
+            "default": 1000
+          },
+          {
+            "label": "PGID",
+            "name": "PGID",
+            "default": 1000
+          }
+        ],
+        "ports": [
+          "8082:80/tcp",
+          "8432:443/tcp"
+        ],
+        "restart_policy": "unless-stopped",
+        "title": "Speedtest Tracker",
+        "type": 1,
+        "volumes": [
+          {
+            "bind": "/opt/speedtest-tracker/config",
+            "container": "/config"
+          }
+        ]
+      }
+    ]
+  }
